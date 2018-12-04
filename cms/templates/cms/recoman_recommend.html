@@ -7,17 +7,52 @@
     <label for="select_manga">漫画の設定</label>
     <div>
         <form action="">
-            {#            <div>{{ form }}</div>#}
+            <div>{{ form }}</div>
             <input type="button" value="送信" id="send"/>
         </form>
     </div>
-
     <script type="text/javascript">
-
+        //TODO:  Ajax button click
         $(function () {
-            // Ajax button click
             $('#send').on('click', function () {
-                alert("hoge")
+
+                // 入力された名前を取得する
+                var name = $('#id_username').val()
+                var series = {}
+
+                for (var i = 1; i <= 5; i++) {
+                    var mangattitle = $('#id_manga' + i).val()
+                    var evaluat = $('#id_evaluat' + i).val()
+
+                    series[mangattitle] = evaluat
+                    {#series[mangattitle]:evaluat#}
+                }
+
+                console.log(name,series)
+
+                // ajaxでrecommendAPIへリクエストする
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5001/cms/api/analyze',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        'name': name,
+                        'series': series
+                    })
+                })
+
+
+                // Ajaxリクエストが成功した時発動
+                    .done((data) => {
+                        alert(1);
+                        console.log(data);
+                    })
+
+                //TODO: lodingを表示する
+
+                //TODO: ajaxのレスポンスをページへ表示する
+
             });
         });
 
