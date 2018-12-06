@@ -4,11 +4,12 @@
 
 {% block content %}
     <h4 class="mt-4 border-bottom text-center">recoman_recommend</h4>
-    <label for="select_manga">漫画の設定</label>
+    <label for="select_manga">漫画情報入力</label>
     <div>
         <form action="">
             <div>{{ form }}</div>
             <input type="button" value="送信" id="send"/>
+            <div id="result"></div>
         </form>
     </div>
     <script type="text/javascript">
@@ -25,13 +26,10 @@
                     var evaluat = $('#id_evaluat' + i).val()
 
                     series[mangattitle] = evaluat
-                    {#series[mangattitle]:evaluat#}
                 }
-
-                console.log(name,series)
+                console.log(name, series)
 
                 // ajaxでrecommendAPIへリクエストする
-
                 $.ajax({
                     url: 'http://127.0.0.1:5001/cms/api/analyze',
                     type: 'POST',
@@ -39,22 +37,27 @@
                     data: JSON.stringify({
                         'name': name,
                         'series': series
-                    })
+                    }),
+                    //TODO: lodingを表示する
+
+                    //TODO: ajaxのレスポンスをページへ表示する
+                    //コールバック後の処理
+                    success: function (json) {
+                        {#dataType: 'json',#}
+                        console.log(json);
+                        $('#result').append(json);
+                    },
+                    error: function () {
+                        $('#result').append('error');
+                    }
+
                 })
-
-
                 // Ajaxリクエストが成功した時発動
                     .done((data) => {
                         alert(1);
                         console.log(data);
                     })
-
-                //TODO: lodingを表示する
-
-                //TODO: ajaxのレスポンスをページへ表示する
-
             });
         });
-
     </script>
 {% endblock content %}
