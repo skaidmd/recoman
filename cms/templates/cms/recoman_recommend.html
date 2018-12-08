@@ -9,7 +9,7 @@
         <form action="">
             <div>{{ form }}</div>
             <input type="button" value="送信" id="send"/>
-            <div id="result"></div>
+            <p id="result"></p>
         </form>
     </div>
     <script type="text/javascript">
@@ -43,9 +43,7 @@
                     //TODO: ajaxのレスポンスをページへ表示する
                     //コールバック後の処理
                     success: function (json) {
-                        {#dataType: 'json',#}
-                        console.log(json);
-                        $('#result').append(json);
+                        $('#result').append(JSON.stringify(json));
                     },
                     error: function () {
                         $('#result').append('error');
@@ -53,10 +51,10 @@
 
                 })
                 // Ajaxリクエストが成功した時発動
-                    .done((data) => {
-                        alert(1);
-                        console.log(data);
-                    })
+                    .done((json) => {
+                        $('#result').append(json);
+                        console.log(json);
+                    });
             });
         });
     </script>
